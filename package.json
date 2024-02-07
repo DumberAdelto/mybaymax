@@ -1,0 +1,21 @@
+{
+  "name": "baymax",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "DumberAdelto",
+  "license": "ISC",
+  "dependencies": {
+    "@assistant/conversation": "^3.8.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-ws": "^5.0.2",
+    "google-auth-library": "^9.6.2",
+    "nodejs-assistant": "^0.8.0",
+    "ws": "^8.16.0"
+  }
+}

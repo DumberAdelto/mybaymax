@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Baymax Control Center</title>
+  <link href="/media/style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://vhtmlt.valueyu.repl.co/w3.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body>
+  <img src="/media/transparent-baymax.png" style="width: 100%;">
+  <div id="distanceData">
+    <h1>Distance data:</h1>
+    <% if (data && data.cm !== undefined && data.in !== undefined) { %>
+      <p>Centimeters: <%= data.cm.toFixed(2) %> cm</p>
+      <p>Inches: <%= data.in.toFixed(2) %> in</p>
+    <% } else { %>
+      <p>Data not available</p>
+    <% }%>
+  </div>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+  <script src="/media/script.js"></script>
+</body>
+
+</html>

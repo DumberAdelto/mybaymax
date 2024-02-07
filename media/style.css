@@ -1,0 +1,19 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    animation: bgColor 10s infinite;
+}
+
+@keyframes bgColor {
+    0% {
+        background-color: white;
+    }
+    50% {
+        background-color: rgb(145, 145, 145);
+    }
+    100% {
+        background-color: white;
+    }
+}
