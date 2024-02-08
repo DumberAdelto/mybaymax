@@ -25,7 +25,8 @@ let blueLed;
 let spokenHold = false;
 let spokenUp = false;
 let latestDistanceData = {};
-
+let latestModeData = {};
+let onlineLed;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -34,9 +35,12 @@ app.use('/media', express.static(path.join(__dirname, 'media')));
 app.get('/getDistanceData', (req, res) => {
   res.json({ data: latestDistanceData });
 });
+app.get('/getModeData', (req, res) => {
+  res.json({ data: latestModeData });
+});
 
 app.get('/', (req, res) => {
-  res.render('index', { data: latestDistanceData });
+  res.render('index', { data: latestDistanceData, latestModeData });
 });
 
 app.get('/html', (req, res) => {
@@ -49,6 +53,7 @@ ws.on('connection', (client) => {
   });
 
   client.send(JSON.stringify({ event: 'distance-updated', data: latestDistanceData }));
+  client.send(JSON.stringify({ event: 'distance-updated', data: latestModeData }));
 });
 
 board.on('ready', () => {
@@ -56,10 +61,13 @@ board.on('ready', () => {
     controller: 'HCSR04',
     pin: 7
   });
+  app.get('/toggleLed', (req, res) => {
+    onlineLed.toggle();
+    res.send('LED toggled');
+  });
 
   // Increase the maximum number of listeners for proximity
-  proximity.setMaxListeners(15);
-
+  proximity.setMaxListeners(20);
   player.play(audioPath, (err) => {
     if (err) {
       console.error('Error playing audio:', err);
@@ -71,7 +79,6 @@ board.on('ready', () => {
       });
     }
   });
-  
   led = new Led(13);
   blueLed = new Led(12);
   const repl = new Repl(board);
@@ -91,16 +98,22 @@ board.on('ready', () => {
 
       latestDistanceData = data;
       if (ultrasonicButton.downValue === 1) {
-          setTimeout(() => {
-            console.log(`Ultrasonic Sensor Reading`);
-            console.log(`centimeters: ${centimeters}cm`);
-            console.log(`inches: ${inches}in`)
-            console.log(`------------------`);
-            console.log(`------------------`);
-            console.log(`------------------`);
-            console.log(`------------------`);
-            console.log(`------------------`);
-          }, 100)
+          // setTimeout(() => {
+            // console.log(`Ultrasonic Sensor Reading`);
+            // console.log(`centimeters: ${centimeters}cm`);
+            // console.log(`inches: ${inches}in`)
+            // console.log(`------------------`);
+            // console.log(`------------------`);
+            // console.log(`------------------`);
+            // console.log(`------------------`);
+            // console.log(`------------------`);
+            app.get('/proximity', function (req, res) {
+              res.json({
+                "cm": centimeters,
+                "in": inches
+              })
+            })
+          // }, 100)
       } else return;
     });
   });
@@ -111,6 +124,7 @@ board.on('ready', () => {
     proximity.removeAllListeners('data');
   });
 
+  let dataState;
   button.on('hold', () => {
     if (!spokenHold) {
       led.on();
@@ -120,6 +134,19 @@ board.on('ready', () => {
       player.play('media/busy_mode.wav');
       spokenHold = true;
       spokenUp = false;
+      if (pressCount === "1") {
+        dataState = `${pressCount}st`;
+      } else if (pressCount === "2") {
+        dataState = `${pressCount}nd`;
+      } else if (pressCount === "3") {
+        dataState = `${pressCount}rd`;
+      } else if (pressCount === "4" || pressCount > "4") {
+        dataState = `${pressCount}th`;
+      }
+      const data = {
+        state: `<br>Busy 🔴 (${dataState} time toggled to busy mode)`
+      }
+      latestModeData = data;
     }
   });
 
@@ -132,6 +159,19 @@ board.on('ready', () => {
       player.play('media/availiable_mode.wav');
       spokenUp = true;
       spokenHold = false;
+      if (bluePressCount === 1) {
+        dataState = `${bluePressCount}st`;
+      } else if (bluePressCount === 2) {
+        dataState = `${bluePressCount}nd`;
+      } else if (bluePressCount === 3) {
+        dataState = `${bluePressCount}rd`;
+      } else if (bluePressCount === 4 || bluePressCount > 4) {
+        dataState = `${bluePressCount}th`;
+      }
+      const data = {
+        state: `<br>Avaliable 🟢 (${dataState} time toggled to avaliable mode)`
+      }
+      latestModeData = data;
     }
   });
 
