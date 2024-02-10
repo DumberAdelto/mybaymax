@@ -1,48 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baymax Control Center</title>
-  <link href="/media/style.css" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" href="https://vhtmlt.valueyu.repl.co/w3.css">
-  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="/media/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/w3.css">
 </head>
 
 <body>
-  <img src="/media/transparent-baymax.png" style="width: 100%;">
-  <div id="distanceData">
-    <!-- <h1>Last Distance data:</h1>
-    <% if (data && data.cm !== undefined && data.in !== undefined) { %>
-      <p>Centimeters: <%= data.cm.toFixed(2) %> cm</p>
-      <p>Inches: <%= data.in.toFixed(2) %> in</p>
-    <% } else { %>
-      <p>Data not available</p>
-    <% }%> -->
-    <h1>Live Distance Data:</h1>
-    <section id="sectionToRefresh">
-    </section>
+  <div class="container">
+    <img src="/media/transparent-baymax.png" alt="Baymax" class="baymax-image">
+    <div class="controls">
+      <h1>Live Distance Data:</h1>
+      <section id="sectionToRefresh">
+        <!-- Distance data will be updated here -->
+      </section>
 
-    <h1>Current state:</h1>
-    <section id="modeSectionToRefresh">
-    </section>
-    <div>
-      <video id="vid" width="200"></video>
+      <h1>Current State:</h1>
+      <section id="modeSectionToRefresh">
+        <!-- Mode data will be updated here -->
+      </section>
+
+      <div class="video-controls">
+        <video id="vid" width="200"></video>
+        <div>
+          <button id="but" class="btn btn-primary">Open Webcam</button>
+          <button id="but2" class="btn btn-danger">Close Webcam</button>
+          <button id="toggleButton" class="btn btn-warning">Toggle LED</button>
+          <button id="musicMode" class="btn btn-success">Enable Music Mode</button>
+        </div>
+      </div>
     </div>
-    <br />
-    <button id="but" autoplay>
-        Open WebCam
-    </button>
-    <button id="but2" autoplay>
-        Close WebCam
-    </button>
   </div>
-  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-  <script>
-    AOS.init();
-  </script>
   <script src="/media/script.js"></script>
 </body>
 

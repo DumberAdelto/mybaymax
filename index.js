@@ -27,6 +27,7 @@ let spokenUp = false;
 let latestDistanceData = {};
 let latestModeData = {};
 let onlineLed;
+let ledOn9thPin;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -47,6 +48,8 @@ app.get('/html', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
+
+
 ws.on('connection', (client) => {
   client.on('message', (msg) => {
     console.log(`Received message: ${msg}`);
@@ -57,17 +60,24 @@ ws.on('connection', (client) => {
 });
 
 board.on('ready', () => {
+ledOn9thPin = new Led(9);
+app.get('/adjustLedBrightness', (req, res) => {
+  const brightness = parseInt(req.query.brightness);
+  // Assuming ledOn9thPin is the variable representing the LED pin
+  ledOn9thPin.brightness(brightness); // Adjust LED brightness based on the average value
+  res.send(`LED brightness adjusted to ${brightness}`);
+});
+app.get('/toggleLed', (req, res) => {
+  ledOn9thPin.toggle();
+  res.send('LED on the 9th pin toggled');
+});
   const proximity = new Proximity({
     controller: 'HCSR04',
     pin: 7
   });
-  app.get('/toggleLed', (req, res) => {
-    onlineLed.toggle();
-    res.send('LED toggled');
-  });
 
   // Increase the maximum number of listeners for proximity
-  proximity.setMaxListeners(20);
+  proximity.setMaxListeners(999);
   player.play(audioPath, (err) => {
     if (err) {
       console.error('Error playing audio:', err);
