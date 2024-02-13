@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const array = new Uint8Array(analyser.frequencyBinCount);
           analyser.getByteFrequencyData(array);
           const arraySum = array.reduce((a, value) => a + value, 0);
-          const average = arraySum / array.length;
+          const average = arraySum / array.length * 7;
           console.log(Math.round(average));
 
           // Adjust the LED brightness based on the average value

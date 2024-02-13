@@ -26,7 +26,6 @@ let spokenHold = false;
 let spokenUp = false;
 let latestDistanceData = {};
 let latestModeData = {};
-let onlineLed;
 let ledOn9thPin;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
