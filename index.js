@@ -62,8 +62,7 @@ board.on('ready', () => {
 ledOn9thPin = new Led(9);
 app.get('/adjustLedBrightness', (req, res) => {
   const brightness = parseInt(req.query.brightness);
-  // Assuming ledOn9thPin is the variable representing the LED pin
-  ledOn9thPin.brightness(brightness); // Adjust LED brightness based on the average value
+  ledOn9thPin.brightness(brightness);
   res.send(`LED brightness adjusted to ${brightness}`);
 });
 app.get('/toggleLed', (req, res) => {
@@ -74,8 +73,6 @@ app.get('/toggleLed', (req, res) => {
     controller: 'HCSR04',
     pin: 7
   });
-
-  // Increase the maximum number of listeners for proximity
   proximity.setMaxListeners(999);
   player.play(audioPath, (err) => {
     if (err) {
@@ -197,6 +194,6 @@ app.get('/toggleLed', (req, res) => {
   });
 
   server.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    console.log(`Control Panel listening on port ${port}`);
   });
 });
