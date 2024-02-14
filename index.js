@@ -1,6 +1,6 @@
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { Board, Button, Repl, Led, Proximity } = require('johnny-five');
+const { Board, Button, Repl, Led, Proximity, Leds } = require('johnny-five');
 const player = require('play-sound')();
 import express from 'express';
 import path, { dirname } from 'path';
@@ -59,7 +59,7 @@ ws.on('connection', (client) => {
 });
 
 board.on('ready', () => {
-ledOn9thPin = new Led(9);
+ledOn9thPin = new Leds([9, 11, 5, 6, 3]);
 app.get('/adjustLedBrightness', (req, res) => {
   const brightness = parseInt(req.query.brightness);
   ledOn9thPin.brightness(brightness);
@@ -90,7 +90,7 @@ app.get('/toggleLed', (req, res) => {
   const repl = new Repl(board);
 
   button = new Button(2);
-  ultrasonicButton = new Button(3);
+  ultrasonicButton = new Button(4);
   let pressCount = 0;
   let bluePressCount = 0;
   const ultraLed = new Led(10);
